@@ -3,8 +3,8 @@ const cors = require("cors");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 
-const ownersController = require("./controllers/owners.controller");
-const carsController = require("./controllers/cars.controller");
+const ownersRouter = require("./routers/owners.router");
+const carsRouter = require("./routers/cars.router");
 
 const PORT = process.env.PORT || 4000
 
@@ -15,9 +15,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(logger("dev"));
-
-const ownersRouter = express.Router();
-const carsRouter = express.Router();
 
 //Relations
 // app.post("/relations", (req, res) => {
@@ -30,24 +27,6 @@ const carsRouter = express.Router();
 //     })
 //     res.json(relations);
 // })
-
-//Owners
-ownersRouter.get("/owners", ownersController.getOwners);
-
-ownersRouter.get("/owners/:id", ownersController.getOwner);
-
-ownersRouter.post("/owners", ownersController.addOwner);
-
-ownersRouter.delete("/owners/:id", ownersController.deleteOwner);
-
-//Cars
-carsRouter.get("/cars", carsController.getCars);
-
-carsRouter.get("/cars/:id", carsController.getCar);
-
-carsRouter.post("/cars", carsController.addCar);
-
-carsRouter.delete("/cars/:id", carsController.deleteCar);
 
 app.use(ownersRouter);
 app.use(carsRouter);
