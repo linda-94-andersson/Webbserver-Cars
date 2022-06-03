@@ -1,10 +1,15 @@
-const owners = [];
+let owners = [];
 
-function updateOne(id, data) {
+function findAll() {
+    return owners;
+}
 
+function deleteOne(id) {
+    owners = owners.filter((owner) => owner.id !== id);
 }
 
 module.exports = {
-    owners: owners,
-    updateOne: updateOne,
+    owners,
+    findAll,
+    deleteOne,
 }

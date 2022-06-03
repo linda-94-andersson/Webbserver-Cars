@@ -1,5 +1,10 @@
-const cars = [];
+let cars = [];
+
+function getAll() {
+    return cars;
+}
 
 module.exports = {
-    cars: cars, 
+    cars,
+    getAll,
 };
