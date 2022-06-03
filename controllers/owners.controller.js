@@ -1,13 +1,16 @@
 const uuid = require('uuid');
 const model = require("../models/owners.model");
 
+const { owners } = model;
+
 function getOwners(req, res) {
-    res.json(model.owners);
+    const result = model.findAll();
+    res.json(result);
 }
 
 function getOwner(req, res) {
-    const foundOwner = model.owners.find((owner) => owner.id === req.params.id);
-    
+    const foundOwner = owners.find((owner) => owner.id === req.params.id);
+
     // const foundRelations = relations.filter((rel) => rel.ownerId === req.params.id);
     // const foundCars = foundRelations.map(((rel) => {
     //     const foundCar = cars.find((car) => car.id === rel.carId)
@@ -25,7 +28,7 @@ function addOwner(req, res) {
         return res.status(400).json({ error: "Namn saknas" });
     }
 
-    model.owners.push({
+    owners.push({
         id: uuid.v4(),
         name: req.body.name
     })
@@ -35,8 +38,8 @@ function addOwner(req, res) {
 }
 
 function deleteOwner(req, res) {
-    model.owners = model.owners.filter((owner) => owner.id !== req.params.id);
-    res.json(model.owners);;
+    const result = model.deleteOne();
+    res.json(result);
 }
 
 module.exports = {

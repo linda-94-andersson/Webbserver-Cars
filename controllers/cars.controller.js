@@ -1,12 +1,15 @@
 const uuid = require('uuid');
 const model = require("../models/cars.model");
 
+let { cars } = model;
+
 function getCars(req, res) {
-    res.json(model.cars);
+    const result = model.getAll();
+    res.json(result);
 }
 
 function getCar(req, res) {
-    const foundCar = model.cars.find((car) => car.id === req.params.id);
+    const foundCar = cars.find((car) => car.id === req.params.id);
     res.json(foundCar);
 }
 
@@ -15,7 +18,7 @@ function addCar(req, res) {
         return res.status(400).json({ error: "Reg.nummer saknas" });
     }
 
-    model.cars.push({
+    cars.push({
         id: uuid.v4(),
         reg: req.body.reg
     })
@@ -25,8 +28,8 @@ function addCar(req, res) {
 }
 
 function deleteCar(req, res) {
-    model.cars = model.cars.filter((car) => car.id !== req.params.id);
-    res.json(model.cars);
+    cars = cars.filter((car) => car.id !== req.params.id);
+    res.json(cars);
 }
 
 module.exports = {
