@@ -1,8 +1,11 @@
 const express = require("express");
+const logger = require("morgan");
 
 const ownersRouter = express.Router();
 
 const ownersController = require("../controllers/owners.controller");
+
+ownersRouter.use(logger("dev"));
 
 ownersRouter.get("/owners", ownersController.getOwners);
 

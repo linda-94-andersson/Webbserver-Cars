@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const logger = require("morgan");
 const bodyParser = require("body-parser");
 
 const ownersRouter = require("./routers/owners.router");
@@ -14,7 +13,6 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(logger("dev"));
 
 //Relations
 // app.post("/relations", (req, res) => {
