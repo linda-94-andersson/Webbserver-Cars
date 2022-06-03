@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
-const uuid = require('uuid');
 
 const ownersController = require("./controllers/owners.controller");
+const carsController = require("./controllers/cars.controller");
 
 const PORT = process.env.PORT || 4000
 
@@ -34,66 +34,20 @@ const carsRouter = express.Router();
 //Owners
 ownersRouter.get("/owners", ownersController.getOwners);
 
-ownersRouter.get("/owners/:id", (req, res) => {
-    const foundOwner = owners.find((owner) => owner.id === req.params.id);
-    const foundRelations = relations.filter((rel) => rel.ownerId === req.params.id);
-    const foundCars = foundRelations.map(((rel) => {
-        const foundCar = cars.find((car) => car.id === rel.carId)
-        return foundCar;
-    }))
-    res.json({
-        owner: foundOwner,
-        cars: foundCars
-    });
-})
+ownersRouter.get("/owners/:id", ownersController.getOwner);
 
-ownersRouter.post("/owners", (req, res) => {
-    if (!req.body.name) {
-        return res.status(400).json({ error: "Namn saknas" });
-    }
+ownersRouter.post("/owners", ownersController.addOwner);
 
-    owners.push({
-        id: uuid.v4(),
-        name: req.body.name
-    })
-
-    const name = req.body.name;
-    res.send(name);
-})
-
-ownersRouter.delete("/owners/:id", (req, res) => {
-    owners = owners.filter((owner) => owner.id !== req.params.id);
-    res.json(owners);
-})
+ownersRouter.delete("/owners/:id", ownersController.deleteOwner);
 
 //Cars
-carsRouter.get("/cars", (req, res) => {
-    res.json(cars);
-})
+carsRouter.get("/cars", carsController.getCars);
 
-carsRouter.get("/cars/:id", (req, res) => {
-    const foundCar = cars.find((car) => car.id === req.params.id);
-    res.json(foundCar);
-})
+carsRouter.get("/cars/:id", carsController.getCar);
 
-carsRouter.post("/cars", (req, res) => {
-    if (!req.body.reg) {
-        return res.status(400).json({ error: "Reg.nummer saknas" });
-    }
+carsRouter.post("/cars", carsController.addCar);
 
-    cars.push({
-        id: uuid.v4(),
-        reg: req.body.reg
-    })
-
-    const reg = req.body.reg;
-    res.send(reg);
-})
-
-carsRouter.delete("/cars/:id", (req, res) => {
-    cars = cars.filter((car) => car.id !== req.params.id);
-    res.json(cars);
-})
+carsRouter.delete("/cars/:id", carsController.deleteCar);
 
 app.use(ownersRouter);
 app.use(carsRouter);
