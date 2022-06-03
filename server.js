@@ -3,15 +3,14 @@ const cors = require("cors");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const uuid = require('uuid');
-const { runInNewContext } = require("vm");
+
+const ownersController = require("./controllers/owners.controller");
 
 const PORT = process.env.PORT || 4000
 
 const app = express();
 
-let owners = [];
-let cars = [];
-const relations = [];
+// const relations = [];
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -21,21 +20,19 @@ const ownersRouter = express.Router();
 const carsRouter = express.Router();
 
 //Relations
-app.post("/relations", (req, res) => {
-    if (!req.body.ownerId || !req.body.carId) {
-        return res.status(400).json({ error: "Id saknas" });
-    }
-    relations.push({
-        ownerId: req.body.ownerId,
-        carId: req.body.carId
-    })
-    res.json(relations);
-})
+// app.post("/relations", (req, res) => {
+//     if (!req.body.ownerId || !req.body.carId) {
+//         return res.status(400).json({ error: "Id saknas" });
+//     }
+//     relations.push({
+//         ownerId: req.body.ownerId,
+//         carId: req.body.carId
+//     })
+//     res.json(relations);
+// })
 
 //Owners
-ownersRouter.get("/owners", (req, res) => {
-    res.json(owners);
-})
+ownersRouter.get("/owners", ownersController.getOwners);
 
 ownersRouter.get("/owners/:id", (req, res) => {
     const foundOwner = owners.find((owner) => owner.id === req.params.id);
